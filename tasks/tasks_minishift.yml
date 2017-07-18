@@ -5,6 +5,17 @@
     tags:
       - minishift
 
+  - name: Minishift | Install dependencies
+    apt: pkg="{{item}}" state=present
+    with_items:
+      - qemu-kvm
+      - libvirt-bin
+      - virt-manager
+    become: yes
+    when: minishift_present | failed
+    tags:
+      - minishift
+
   - name: Minishift | Create installation directory
     file: path="{{minishift_dir|default('/opt/minishift')}}" owner="root" state="directory"
     become: yes
@@ -13,7 +24,7 @@
       - minishift
 
   - name: Minishift | download package
-    get_url: validate_certs="false" url="https://github.com/minishift/minishift/releases/download/v{{minishift_version|default('1.3.0')}}/minishift-{{minishift_version | default('1.3.0')}}-{{ansible_system}}-{{ansible_architecture}}.tgz" dest="{{minishift_dir | default('/opt/minishift')}}/minishift.tgz"
+    get_url: validate_certs="false" url="https://github.com/minishift/minishift/releases/download/v{{minishift_version|default('1.3.0')}}/minishift-{{minishift_version | default('1.3.0')}}-{{ansible_system}}-amd64.tgz" dest="{{minishift_dir | default('/opt/minishift')}}/minishift.tgz"
     when: minishift_present | failed
     become: yes
     tags:
