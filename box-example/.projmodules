@@ -1,0 +1,8 @@
+[submodule "roles/sa-docker"]
+        path = roles/sa-docker
+        url = https://github.com/softasap/sa-docker.git
+[submodule "roles/sa-minishift"]
+        path = roles/sa-minishift
+        url = https://github.com/softasap/sa-minishift.git
+
+

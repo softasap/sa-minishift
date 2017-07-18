@@ -1,0 +1,6 @@
+---
+# defaults file for sa-minishift
+
+minishift_version: 1.3.0
+minishift_user: {{ansible_user_id}}
+minishift_dir: /opt/minishift

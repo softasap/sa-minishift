@@ -1,0 +1,34 @@
+  - name: Minishift | Test if is present
+    command: test -x /usr/local/bin/minishift
+    ignore_errors: yes
+    register: minishift_present
+    tags:
+      - minishift
+
+  - name: Minishift | Create installation directory
+    file: path="{{minishift_dir|default('/opt/minishift')}}" owner="root" state="directory"
+    become: yes
+    when: minishift_present | failed
+    tags:
+      - minishift
+
+  - name: Minishift | download package
+    get_url: validate_certs="false" url="https://github.com/minishift/minishift/releases/download/v{{minishift_version|default('1.3.0')}}/minishift-{{minishift_version | default('1.3.0')}}-{{ansible_system}}-{{ansible_architecture}}.tgz" dest="{{minishift_dir | default('/opt/minishift')}}/minishift.tgz"
+    when: minishift_present | failed
+    become: yes
+    tags:
+      - minishift_present
+
+  - name: Minishift | extract package
+    unarchive: src="{{minishift_dir | default('/opt/minishift')}}/minishift.tgz"  dest="{{minishift_dir | default('/opt/minishift')}}" remote_src=True
+    when: minishift_present | failed
+    become: yes
+    tags:
+      - minishift
+
+  - name: Minishift | Link executable
+    file:  src="{{minishift_dir | default('/opt/minishift')}}/minishift" dest="/usr/local/bin/minishift"  owner="root"  state=link
+    become: yes
+    when: minishift_present | failed
+    tags:
+      - minishift

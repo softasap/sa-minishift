@@ -1,0 +1,4 @@
+---
+# tasks file for sa-minishift
+  - include: tasks_minishift.yml
+  
