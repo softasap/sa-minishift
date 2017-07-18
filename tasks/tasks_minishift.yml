@@ -16,6 +16,13 @@
     tags:
       - minishift
 
+  - name: Minishift | Install docker driver
+    shell: "curl -L https://github.com/dhiltgen/docker-machine-kvm/releases/download/v0.10.0/docker-machine-driver-kvm-ubuntu{{ansible_distribution_version}} > /usr/local/bin/docker-machine-driver-kvm &&  chmod +x /usr/local/bin/docker-machine-driver-kvm"
+    become: yes
+    when: minishift_present | failed
+    tags:
+      - minishift
+
   - name: Minishift | Create installation directory
     file: path="{{minishift_dir|default('/opt/minishift')}}" owner="root" state="directory"
     become: yes
